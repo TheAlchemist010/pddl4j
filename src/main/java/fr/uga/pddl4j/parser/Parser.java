@@ -326,6 +326,8 @@ public final class Parser implements Callable<Integer> {
         return this.parseProblem();
     }
 
+    
+
     /**
      * Parses a planning problem from a specific file.
      *
@@ -359,11 +361,80 @@ public final class Parser implements Callable<Integer> {
         this.checkObjectsDeclaration();
         this.checkInitialTaskNetwork();
         this.checkInitialState();
-        this.checkGoal();
         this.checkProblemConstraints();
         this.checkMetric();
         return (this.getErrorManager().getMessages(Message.Type.LEXICAL_ERROR).isEmpty()
             && this.getErrorManager().getMessages(Message.Type.PARSER_ERROR).isEmpty()) ? this.problem : null;
+    }
+
+
+    public ParsedProblem parseProblemWithoutGoal(File problem) throws FileNotFoundException {
+        this.problemFile = problem;
+        return this.parseProblemWithoutGoal();
+    }
+
+
+    public ParsedProblem parseProblemWithoutGoal() throws FileNotFoundException {
+        if (!this.getProblemFile().exists()) {
+            throw new FileNotFoundException("File  \"" + this.getProblemFile().getName() + "\" does not exist.\n");
+        }
+
+        // Parse and check the problem
+        FileInputStream inputStream = new FileInputStream(this.getProblemFile());
+        if (this.lexer == null) {
+            this.lexer = new Lexer(inputStream);
+        } else {
+            this.lexer.ReInit(inputStream);
+        }
+        this.lexer.setFile(this.getProblemFile());
+        try {
+            this.problem = this.lexer.problemWithoutGoal();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (this.problem == null) {
+            return null;
+        }
+        this.checkDomainName();
+        this.checkRequirements();
+        this.checkObjectsDeclaration();
+        this.checkInitialTaskNetwork();
+        this.checkInitialState();
+        this.checkProblemConstraints();
+        this.checkMetric();
+        return this.problem;
+    }
+
+    public ParsedProblem parseGoal(File problem) throws FileNotFoundException {
+        this.problemFile = problem;
+        return this.parseGoal();
+    }
+
+    public ParsedProblem parseGoal() throws FileNotFoundException {
+        if (!this.getProblemFile().exists()) {
+            throw new FileNotFoundException("File  \"" + this.getProblemFile().getName() + "\" does not exist.\n");
+        }
+
+        // Parse and check the problem
+        FileInputStream inputStream = new FileInputStream(this.getProblemFile());
+        if (this.lexer == null) {
+            this.lexer = new Lexer(inputStream);
+        } else {
+            this.lexer.ReInit(inputStream);
+        }
+        this.lexer.setFile(this.getProblemFile());
+        try {
+            this.problem = this.lexer.goalOnly();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+        if (this.problem == null) {
+            return null;
+        } 
+
+        return this.problem;
     }
 
     /**

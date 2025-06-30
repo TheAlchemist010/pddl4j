@@ -21,7 +21,6 @@ import fr.uga.pddl4j.parser.Expression;
 import fr.uga.pddl4j.parser.Message;
 import fr.uga.pddl4j.parser.Symbol;
 import fr.uga.pddl4j.parser.SymbolType;
-import fr.uga.pddl4j.parser.UnexpectedExpressionException;
 import fr.uga.pddl4j.plan.Hierarchy;
 import fr.uga.pddl4j.plan.Plan;
 import fr.uga.pddl4j.problem.numeric.ArithmeticExpression;
@@ -54,6 +53,8 @@ import fr.uga.pddl4j.problem.time.TemporalOrderingConstraintNetwork;
 import fr.uga.pddl4j.problem.time.TemporalRelation;
 import fr.uga.pddl4j.util.BitSet;
 import fr.uga.pddl4j.util.BitVector;
+import fr.uga.pddl4j.parser.UnexpectedExpressionException;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,8 +67,10 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This class contains all the methods needed to post instantiation process of a planning problem. In particular, this
- * class contains the methods necessary to compactly encode the problem using compact bit set representation.
+ * This class contains all the methods needed to post instantiation process of a
+ * planning problem. In particular, this
+ * class contains the methods necessary to compactly encode the problem using
+ * compact bit set representation.
  *
  * @author D. Pellier
  * @version 4.0 - 04.12.2020
@@ -135,7 +138,8 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     private TaskNetwork initialTaskNetwork;
 
     /**
-     * The list containing for each relevant task at a specified the set of resolvers, i.e., action or methods.
+     * The list containing for each relevant task at a specified the set of
+     * resolvers, i.e., action or methods.
      */
     private List<List<Integer>> taskResolvers;
 
@@ -217,12 +221,18 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         return this.goal;
     }
 
+    public void setGoal(Goal goal) {
+        this.goal = goal;
+    }
+
     /**
-     * Returns the list of relevant fluents of the problem in the form of <code>Expression</code>.
+     * Returns the list of relevant fluents of the problem in the form of
+     * <code>Expression</code>.
      *
-     * @return the list of relevant fluents of the problem in the form of <code>Expression</code>.
+     * @return the list of relevant fluents of the problem in the form of
+     *         <code>Expression</code>.
      */
-    private List<Expression<Integer>> getIntExpFluents() {
+    public List<Expression<Integer>> getIntExpFluents() {
         return this.intExpFluents;
     }
 
@@ -232,16 +242,18 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
      *
      * @return the map used to encode fluents into bit set representation.
      */
-    private Map<Expression<Integer>, Integer> getMapOfFluentIndex() {
+    public Map<Expression<Integer>, Integer> getMapOfFluentIndex() {
         return this.mapOfFluentIndex;
     }
 
     /**
-     * Returns the list of relevant numeric fluents of the problem in the form of <code>Expression</code>.
+     * Returns the list of relevant numeric fluents of the problem in the form of
+     * <code>Expression</code>.
      *
-     * @return the list of relevant numericfluents of the problem in the form of <code>Expression</code>.
+     * @return the list of relevant numericfluents of the problem in the form of
+     *         <code>Expression</code>.
      */
-    private List<Expression<Integer>> getIntExpNumericFluents() {
+    public List<Expression<Integer>> getIntExpNumericFluents() {
         return this.intExpNumericFluents;
     }
 
@@ -250,7 +262,7 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
      *
      * @return the map used to encode numeric fluents into bit set representation.
      */
-    private Map<Expression<Integer>, Integer> getMapOfNumericFluentIndex() {
+    public Map<Expression<Integer>, Integer> getMapOfNumericFluentIndex() {
         return this.mapOfNumericFluentIndex;
     }
 
@@ -264,29 +276,44 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Returns the relevant operators for the tasks of the problem. The method return {@code null} if the problem is
+     * Returns the relevant operators for the tasks of the problem. The method
+     * return {@code null} if the problem is
      * not hierarchical.
      * <p>
-     *     Warning a task may have many resolvers event primitives tasks.
+     * Warning a task may have many resolvers event primitives tasks.
      * </p>
-     * The resolvers returned are indexes of operators. To get the list of resolvers of a specific task {@code t} just
+     * The resolvers returned are indexes of operators. To get the list of resolvers
+     * of a specific task {@code t} just
      * write:
+     *
      * <pre>{@code
      *     List<Integer> resolvers = problem.getTaskResolvers().get(t)
      * }</pre>
+     *
      * Two case must be considered.
      * <ul>
-     * <li> If the task {@code t} is primitive, i.e., {@code problem.getTask(t).isPrimtive()}
-     * returns true, the list of resolvers contains either indexes of actions either indexes of durative actions.
-     * If the index is positive the index represents an action. To get the corresponding action just use
-     * {@code problem.getActions(index)}. If the index is negative the index represents a durative action.
-     * To get the corresponding durative action just use {@code problem.getDurativeActions(-index - 1)}.</li>
-     * <li>Symmetrically, if the task {@code t} is compound, i.e., {@code problem.getTask(t).isCompound()}
-     * returns true, the list of resolvers contains either indexes of method either indexes of durative methods.
-     * If the index is positive the index represents a method. To get the corresponding method just use
-     * {@code problem.getMethods(index)}. If the index is negative the index represents a durative method.
-     * To get the corresponding durative method just use {@code problem.getDurativeMethods(-index - 1)}.</li>
+     * <li>If the task {@code t} is primitive, i.e.,
+     * {@code problem.getTask(t).isPrimtive()}
+     * returns true, the list of resolvers contains either indexes of actions either
+     * indexes of durative actions.
+     * If the index is positive the index represents an action. To get the
+     * corresponding action just use
+     * {@code problem.getActions(index)}. If the index is negative the index
+     * represents a durative action.
+     * To get the corresponding durative action just use
+     * {@code problem.getDurativeActions(-index - 1)}.</li>
+     * <li>Symmetrically, if the task {@code t} is compound, i.e.,
+     * {@code problem.getTask(t).isCompound()}
+     * returns true, the list of resolvers contains either indexes of method either
+     * indexes of durative methods.
+     * If the index is positive the index represents a method. To get the
+     * corresponding method just use
+     * {@code problem.getMethods(index)}. If the index is negative the index
+     * represents a durative method.
+     * To get the corresponding durative method just use
+     * {@code problem.getDurativeMethods(-index - 1)}.</li>
      * </ul>
+     *
      * @return the relevant operators for a task.
      */
     public List<List<Integer>> getTaskResolvers() {
@@ -329,9 +356,9 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         return this.durativeMethods;
     }
 
-
     /**
-     * Extracts the relevant fluents from the instantiated actions. A fluents is relevant if and
+     * Extracts the relevant fluents from the instantiated actions. A fluents is
+     * relevant if and
      * only if:
      * <ul>
      * <li>1. it is an initial fact and not a negative ground inertia, or if</li>
@@ -357,9 +384,9 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
             }
         }
         // Add relevant fluents from the goal
-        //for (Expression<Integer> p : this.getIntGoal().getChildren()) {
-        //    fluents.add(p);
-        //}
+        // for (Expression<Integer> p : this.getIntGoal().getChildren()) {
+        // fluents.add(p);
+        // }
 
         this.intExpFluents = new ArrayList<>(fluents.size());
         this.fluents = new ArrayList<>(fluents.size());
@@ -375,14 +402,15 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Extracts the relevant fluents from a specified expression. A fluent is relevant if and
+     * Extracts the relevant fluents from a specified expression. A fluent is
+     * relevant if and
      * only if:
      * <ul>
      * <li>1. it is an initial fluent and not a negative ground inertia, or if</li>
      * <li>2. it is not an initial fact and not a positive ground inertia.</li>
      * </ul>
      *
-     * @param exp   the expression.
+     * @param exp     the expression.
      * @param fluents the set of relevant fluents.
      */
     protected void extractRelevantFluents(final Expression<Integer> exp, final Set<Expression<Integer>> fluents) {
@@ -393,7 +421,7 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
                     inertia = Inertia.INERTIA;
                 }
                 if ((this.getIntInitialState().contains(exp) && !inertia.equals(Inertia.NEGATIVE))
-                    || (!this.getIntInitialState().contains(exp) && !inertia.equals(Inertia.POSITIVE))) {
+                        || (!this.getIntInitialState().contains(exp) && !inertia.equals(Inertia.POSITIVE))) {
                     fluents.add(exp);
                 }
                 break;
@@ -492,14 +520,15 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Extracts the relevant facts from a specified expression. A ground fact is relevant if and
+     * Extracts the relevant facts from a specified expression. A ground fact is
+     * relevant if and
      * only if:
      * <ul>
      * <li>1. it is an initial fact and not a negative ground inertia, or if</li>
      * <li>2. it is not an initial fact and not a positive ground inertia.</li>
      * </ul>
      *
-     * @param exp   the expression.
+     * @param exp     the expression.
      * @param fluents the set of relevant facts.
      */
     private void extractRelevantNumericFluents(final Expression<Integer> exp, final Set<Expression<Integer>> fluents) {
@@ -555,10 +584,12 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Initializes the map that store for each relevant fluent its index to speedup the bit set encoding of the action.
+     * Initializes the map that store for each relevant fluent its index to speedup
+     * the bit set encoding of the action.
      */
     protected void initOfMapFluentIndex() {
-        // Create a map of the relevant fluents with their index to speedup the bit set encoding of the actions
+        // Create a map of the relevant fluents with their index to speedup the bit set
+        // encoding of the actions
         this.mapOfFluentIndex = new LinkedHashMap<>(this.getIntExpFluents().size());
         int index = 0;
         for (Expression<Integer> fluent : this.getIntExpFluents()) {
@@ -568,7 +599,8 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Create a map of the relevant numeric fluents with their index to speedup the bit set encoding of the actions.
+     * Create a map of the relevant numeric fluents with their index to speedup the
+     * bit set encoding of the actions.
      */
     protected void initMapOfNumericFluentIndex() {
         this.mapOfNumericFluentIndex = new LinkedHashMap<>(this.getIntExpNumericFluents().size());
@@ -579,17 +611,21 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Encode a list of specified actions into <code>BitSet</code> representation. Several specified
-     * map is used to speed-up the search by mapping the an expression to this index.
+     * Encode a list of specified actions into <code>BitSet</code> representation.
+     * Several specified
+     * map is used to speed-up the search by mapping the an expression to this
+     * index.
      */
-    protected void finalizeActions()  throws UnexpectedExpressionException {
+    protected void finalizeActions() throws UnexpectedExpressionException {
         this.actions = new ArrayList<>(this.getIntActions().size());
         this.durativeActions = new ArrayList<>(this.getIntActions().size());
         // The index of the primitive task is index of the action
-        // This index is used to update the resolvers of the primitive task in the case of HTN problem.
+        // This index is used to update the resolvers of the primitive task in the case
+        // of HTN problem.
         int task = 0;
         for (IntAction action : this.getIntActions()) {
-            // We split action precondition to have only actions with disjunctive precondition
+            // We split action precondition to have only actions with disjunctive
+            // precondition
             List<IntAction> normalizedActionList = this.normalizeAction(action);
             for (IntAction normalizedAction : normalizedActionList) {
                 if (!normalizedAction.isDurative()) {
@@ -611,8 +647,10 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Encode an specified <code>Expression</code> in its <code>BitExp</code> representation.The
-     * specified map is used to speed-up the search by mapping the an expression to this index.
+     * Encode an specified <code>Expression</code> in its <code>BitExp</code>
+     * representation.The
+     * specified map is used to speed-up the search by mapping the an expression to
+     * this index.
      *
      * @return the expression in bit set representation.
      */
@@ -680,10 +718,11 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         return effect;
     }
 
-
     /**
-     * Encode an specified <code>Expression</code> in its <code>BitExp</code> representation.The
-     * specified map is used to speed-up the search by mapping the an expression to this index.
+     * Encode an specified <code>Expression</code> in its <code>BitExp</code>
+     * representation.The
+     * specified map is used to speed-up the search by mapping the an expression to
+     * this index.
      *
      * @return the expression in bit set representation.
      */
@@ -693,7 +732,7 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
             case AT_START:
             case AT_END:
             case OVER_ALL:
-                Effect effect =  null;
+                Effect effect = null;
                 if (exp.getConnector().equals(Connector.AT_START)) {
                     effect = temporalEffect.getAtStartEffect();
                 } else if (exp.getConnector().equals(Connector.AT_END)) {
@@ -725,23 +764,23 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
                 for (Expression<Integer> e : exp.getChildren()) {
                     TemporalEffect te = this.finalizeTimeEffect(e);
                     temporalEffect.getAtStartEffect().getPositiveFluents()
-                        .or(te.getAtStartEffect().getPositiveFluents());
+                            .or(te.getAtStartEffect().getPositiveFluents());
                     temporalEffect.getAtStartEffect().getNegativeFluents()
-                        .or(te.getAtStartEffect().getNegativeFluents());
+                            .or(te.getAtStartEffect().getNegativeFluents());
                     temporalEffect.getAtStartEffect().getNumericAssignments()
-                        .addAll(te.getAtStartEffect().getNumericAssignments());
+                            .addAll(te.getAtStartEffect().getNumericAssignments());
                     temporalEffect.getAtEndEffect().getPositiveFluents()
-                        .or(te.getAtEndEffect().getPositiveFluents());
+                            .or(te.getAtEndEffect().getPositiveFluents());
                     temporalEffect.getAtEndEffect().getNegativeFluents()
-                        .or(te.getAtEndEffect().getNegativeFluents());
+                            .or(te.getAtEndEffect().getNegativeFluents());
                     temporalEffect.getAtEndEffect().getNumericAssignments()
-                        .addAll(te.getAtEndEffect().getNumericAssignments());
+                            .addAll(te.getAtEndEffect().getNumericAssignments());
                     temporalEffect.getOverallEffect().getPositiveFluents()
-                        .or(te.getOverallEffect().getPositiveFluents());
+                            .or(te.getOverallEffect().getPositiveFluents());
                     temporalEffect.getOverallEffect().getNegativeFluents()
-                        .or(te.getOverallEffect().getNegativeFluents());
+                            .or(te.getOverallEffect().getNegativeFluents());
                     temporalEffect.getOverallEffect().getNumericAssignments()
-                        .addAll(te.getOverallEffect().getNumericAssignments());
+                            .addAll(te.getOverallEffect().getNumericAssignments());
                 }
                 break;
             case TRUE:
@@ -753,10 +792,11 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         return temporalEffect;
     }
 
-
     /**
-     * Encode an specified <code>Expression</code> in its <code>BitExp</code> representation.The
-     * specified map is used to speed-up the search by mapping the an expression to this index.
+     * Encode an specified <code>Expression</code> in its <code>BitExp</code>
+     * representation.The
+     * specified map is used to speed-up the search by mapping the an expression to
+     * this index.
      *
      * @return the expression in bit set representation.
      */
@@ -795,23 +835,23 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
             TemporalConditionalEffect tcei = it.next();
             if (tcei.getCondition().isEmpty()) {
                 utce.getEffect().getAtStartEffect().getPositiveFluents()
-                    .or(tcei.getEffect().getAtStartEffect().getPositiveFluents());
+                        .or(tcei.getEffect().getAtStartEffect().getPositiveFluents());
                 utce.getEffect().getAtStartEffect().getNegativeFluents()
-                    .or(tcei.getEffect().getAtStartEffect().getNegativeFluents());
+                        .or(tcei.getEffect().getAtStartEffect().getNegativeFluents());
                 utce.getEffect().getAtStartEffect().getNumericAssignments()
-                    .addAll(tcei.getEffect().getAtStartEffect().getNumericAssignments());
+                        .addAll(tcei.getEffect().getAtStartEffect().getNumericAssignments());
                 utce.getEffect().getAtEndEffect().getPositiveFluents()
-                    .or(tcei.getEffect().getAtEndEffect().getPositiveFluents());
+                        .or(tcei.getEffect().getAtEndEffect().getPositiveFluents());
                 utce.getEffect().getAtEndEffect().getNegativeFluents()
-                    .or(tcei.getEffect().getAtEndEffect().getNegativeFluents());
+                        .or(tcei.getEffect().getAtEndEffect().getNegativeFluents());
                 utce.getEffect().getAtEndEffect().getNumericAssignments()
-                    .addAll(tcei.getEffect().getAtEndEffect().getNumericAssignments());
+                        .addAll(tcei.getEffect().getAtEndEffect().getNumericAssignments());
                 utce.getEffect().getOverallEffect().getPositiveFluents()
-                    .or(tcei.getEffect().getOverallEffect().getPositiveFluents());
+                        .or(tcei.getEffect().getOverallEffect().getPositiveFluents());
                 utce.getEffect().getOverallEffect().getNegativeFluents()
-                    .or(tcei.getEffect().getOverallEffect().getNegativeFluents());
+                        .or(tcei.getEffect().getOverallEffect().getNegativeFluents());
                 utce.getEffect().getOverallEffect().getNumericAssignments()
-                    .addAll(tcei.getEffect().getOverallEffect().getNumericAssignments());
+                        .addAll(tcei.getEffect().getOverallEffect().getNumericAssignments());
                 it.remove();
                 exist = true;
             }
@@ -822,11 +862,13 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         return effects;
     }
 
-
     /**
-     * Normalize an action, i.e, put in disjunctive normal form (DNF) for preconditions and put
-     * in conjunctive normal form (CNF) for effects. If an action has disjunctive preconditions, a
-     * new operator is created such all actions after normalization have only conjunctive
+     * Normalize an action, i.e, put in disjunctive normal form (DNF) for
+     * preconditions and put
+     * in conjunctive normal form (CNF) for effects. If an action has disjunctive
+     * preconditions, a
+     * new operator is created such all actions after normalization have only
+     * conjunctive
      * precondition.
      *
      * @param action the action to normalize.
@@ -896,7 +938,8 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     /**
      * Encodes a specified action.
      *
-     * @param action the action to be encoded. The precondition of the action must be a simple conjunction of atomic
+     * @param action the action to be encoded. The precondition of the action must
+     *               be a simple conjunction of atomic
      *               formulas
      * @return the action encoded.
      */
@@ -927,14 +970,14 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
             effects.addAll(action.getEffects().getChildren());
         }
 
-        //System.out.println(this.toString(action));
+        // System.out.println(this.toString(action));
         final ConditionalEffect unCondEffects = new ConditionalEffect();
         boolean hasUnConditionalEffects = false;
-        while (!effects.isEmpty()) { //for (Expression ei : effects) {
+        while (!effects.isEmpty()) { // for (Expression ei : effects) {
             Expression<Integer> ei = effects.poll();
             final Connector connective = ei.getConnector();
             final List<Expression<Integer>> children = ei.getChildren();
-            //System.out.println("EXP " + this.toString(ei));
+            // System.out.println("EXP " + this.toString(ei));
             switch (connective) {
                 case WHEN:
                     // NumericAssignement not encoded in conditional effect.
@@ -949,7 +992,7 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
                         unCondEffects.getEffect().getPositiveFluents().set(index);
                         hasUnConditionalEffects = true;
                     } else {
-                        //System.out.println(this.toString(ei) + " not found");
+                        // System.out.println(this.toString(ei) + " not found");
                     }
                     break;
                 case NOT:
@@ -980,18 +1023,21 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         if (hasUnConditionalEffects) {
             encoded.getConditionalEffects().add(unCondEffects);
         }
-        /*try {
-            System.in.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+        /*
+         * try {
+         * System.in.read();
+         * } catch (IOException e) {
+         * e.printStackTrace();
+         * }
+         */
         return encoded;
     }
 
     /**
      * Encodes a specified action.
      *
-     * @param action the action to be encoded. The precondition of the action must be a simple conjunction of atomic
+     * @param action the action to be encoded. The precondition of the action must
+     *               be a simple conjunction of atomic
      *               formulas
      * @return the action encoded.
      */
@@ -1013,7 +1059,8 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Encode a specified goal in a disjunction of <code>BitExp</code>. The specified
+     * Encode a specified goal in a disjunction of <code>BitExp</code>. The
+     * specified
      * map is used to speed-up the search by mapping an expression to this index.
      * The goal of the problem is set to null if it can be simplified to false.
      */
@@ -1064,7 +1111,8 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Encode an specified <code>Expression</code> that represents a condition in its <code>BitExp</code>
+     * Encode an specified <code>Expression</code> that represents a condition in
+     * its <code>BitExp</code>
      * representation. The map of fluent index is used to speed-up the encoding.
      *
      * @param exp the <code>Expression</code>.
@@ -1104,7 +1152,8 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Encode an specified <code>Expression</code> that represents a condition in its <code>BitExp</code>
+     * Encode an specified <code>Expression</code> that represents a condition in
+     * its <code>BitExp</code>
      * representation. The map of fluent index is used to speed-up the encoding.
      *
      * @param exp the <code>Expression</code>.
@@ -1148,23 +1197,23 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
                 for (Expression<Integer> e : exp.getChildren()) {
                     TemporalCondition ce = this.finalizeTimeCondition(e);
                     temporalCondition.getAtStartCondition().getPositiveFluents()
-                        .or(ce.getAtStartCondition().getPositiveFluents());
+                            .or(ce.getAtStartCondition().getPositiveFluents());
                     temporalCondition.getAtStartCondition().getNegativeFluents()
-                        .or(ce.getAtStartCondition().getNegativeFluents());
+                            .or(ce.getAtStartCondition().getNegativeFluents());
                     temporalCondition.getAtStartCondition().getNumericConstraints()
-                        .addAll(ce.getAtStartCondition().getNumericConstraints());
+                            .addAll(ce.getAtStartCondition().getNumericConstraints());
                     temporalCondition.getAtEndCondition().getPositiveFluents()
-                        .or(ce.getAtEndCondition().getPositiveFluents());
+                            .or(ce.getAtEndCondition().getPositiveFluents());
                     temporalCondition.getAtEndCondition().getNegativeFluents()
-                        .or(ce.getAtEndCondition().getNegativeFluents());
+                            .or(ce.getAtEndCondition().getNegativeFluents());
                     temporalCondition.getAtEndCondition().getNumericConstraints()
-                        .addAll(ce.getAtEndCondition().getNumericConstraints());
+                            .addAll(ce.getAtEndCondition().getNumericConstraints());
                     temporalCondition.getOverallCondition().getPositiveFluents()
-                        .or(ce.getOverallCondition().getPositiveFluents());
+                            .or(ce.getOverallCondition().getPositiveFluents());
                     temporalCondition.getOverallCondition().getNegativeFluents()
-                        .or(ce.getOverallCondition().getNegativeFluents());
+                            .or(ce.getOverallCondition().getNegativeFluents());
                     temporalCondition.getOverallCondition().getNumericConstraints()
-                        .addAll(ce.getOverallCondition().getNumericConstraints());
+                            .addAll(ce.getOverallCondition().getNumericConstraints());
                 }
                 break;
             case TRUE:
@@ -1177,14 +1226,16 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Encode an specified <code>Expression</code> in its <code>BitExp</code> representation.The
-     * specified map is used to speed-up the search by mapping the an expression to this index.
+     * Encode an specified <code>Expression</code> in its <code>BitExp</code>
+     * representation.The
+     * specified map is used to speed-up the search by mapping the an expression to
+     * this index.
      *
      * @param exp the <code>Expression</code>.
      * @return the expression in bit set representation.
      */
     private List<NumericConstraint> finalizeNumericConstraints(final Expression<Integer> exp)
-        throws UnexpectedExpressionException {
+            throws UnexpectedExpressionException {
 
         final List<NumericConstraint> constraints = new ArrayList<>();
         switch (exp.getConnector()) {
@@ -1313,7 +1364,8 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Encode a specified initial state in it bit compact representation. The map of the fluent index is used to speedup
+     * Encode a specified initial state in it bit compact representation. The map of
+     * the fluent index is used to speedup
      * the encoding.
      */
     protected void finalizeInitialState() {
@@ -1350,19 +1402,21 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
                 this.initialState.addNumericFluent(var);
             }
         }
-        /*for (Map.Entry<Expression<Integer>, Integer> e : this.mapOfNumericFluentIndex.entrySet()) {
-            int index = e.getValue();
-            Double value = this.getIntInitFunctionCost().get(e.getKey());
-            NumericVariable fluent = new NumericVariable(index, value);
-            this.initialState.addNumericFluent(fluent);
-        }*/
+        /*
+         * for (Map.Entry<Expression<Integer>, Integer> e :
+         * this.mapOfNumericFluentIndex.entrySet()) {
+         * int index = e.getValue();
+         * Double value = this.getIntInitFunctionCost().get(e.getKey());
+         * NumericVariable fluent = new NumericVariable(index, value);
+         * this.initialState.addNumericFluent(fluent);
+         * }
+         */
     }
-
 
     /**
      * Returns a string representation of a specified operator.
      *
-     * @param action     the action.
+     * @param action the action.
      * @return a string representation of the specified operator.
      */
     public final String toString(final Action action) {
@@ -1385,7 +1439,7 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     /**
      * Returns a string representation of a specified operator.
      *
-     * @param action     the action.
+     * @param action the action.
      * @return a string representation of the specified operator.
      */
     public final String toString(final DurativeAction action) {
@@ -1489,7 +1543,7 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     /**
      * Returns a string representation of a conditional effect.
      *
-     * @param effect  the conditional effect.
+     * @param effect the conditional effect.
      * @return a string representation of the specified condition effect.
      */
     public final String toString(final ConditionalEffect effect) {
@@ -1509,7 +1563,7 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     /**
      * Returns a string representation of a temporal conditional effect.
      *
-     * @param effect  the temporal conditional effect.
+     * @param effect the temporal conditional effect.
      * @return a string representation of the specified temporal condition effect.
      */
     public final String toString(final TemporalConditionalEffect effect) {
@@ -1730,10 +1784,10 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         final int timeSpecifierSize = (int) Math.log10(plan.timeSpecifiers().size()) + 1;
 
         final StringBuilder str = new StringBuilder();
-        plan.timeSpecifiers().forEach(time ->
-            plan.getActionSet(time).forEach(a ->
-                str.append(String.format("%0" + timeSpecifierSize + "d: (%" + actionSize + "s) [%d]%n",
-                    time, this.toShortString(a), (int) a.getDuration().getValue()))));
+        plan.timeSpecifiers()
+                .forEach(time -> plan.getActionSet(time).forEach(
+                        a -> str.append(String.format("%0" + timeSpecifierSize + "d: (%" + actionSize + "s) [%d]%n",
+                                time, this.toShortString(a), (int) a.getDuration().getValue()))));
         return str.toString();
     }
 
@@ -1903,7 +1957,6 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         return str.toString();
     }
 
-
     /**
      * Returns a string representation of the specified task network.
      *
@@ -1949,12 +2002,13 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         return str.toString();
     }
 
-
     /**
      * Returns a string representation of a hierarchical decomposition of plan.
      *
-     * @param hierarchy the hierarchical decomposition to convert into string represention.
-     * @return the string representation of the he hierarchical decomposition in parameter.
+     * @param hierarchy the hierarchical decomposition to convert into string
+     *                  represention.
+     * @return the string representation of the he hierarchical decomposition in
+     *         parameter.
      */
     public String toString(final Hierarchy hierarchy) {
         StringBuilder str = new StringBuilder();
@@ -2024,7 +2078,7 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
                 str.append("(= ");
                 if (expression.getNumericFluent() == NumericVariable.DURATION) {
                     str.append("?duration");
-                } else  {
+                } else {
                     str.append(this.getNumericFluents().get(expression.getNumericFluent()));
                 }
                 str.append(" ");
@@ -2064,10 +2118,12 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Returns a string representation of the internal data structure used during instantiation process.
+     * Returns a string representation of the internal data structure used during
+     * instantiation process.
      *
      * @param data the internal data structure.
-     * @return a string representation of the internal data structure used during instantiation process.
+     * @return a string representation of the internal data structure used during
+     *         instantiation process.
      */
     protected String toString(final Data data) {
         final StringBuilder str = new StringBuilder();
@@ -2203,7 +2259,8 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
      * Returns a string representation of a the instantiation of an operator.
      *
      * @param operator the operator.
-     * @return a string representation of the instantiation of the specified operator.
+     * @return a string representation of the instantiation of the specified
+     *         operator.
      */
     private final String toStringInstantiations(final Operator operator) {
         StringBuilder str = new StringBuilder();
@@ -2230,10 +2287,11 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Returns a short string representation of the specified operator, i.e., its name and its
+     * Returns a short string representation of the specified operator, i.e., its
+     * name and its
      * instantiated parameters. This method can be used for actions and methods.
      *
-     * @param operator  the operator.
+     * @param operator the operator.
      * @return a string representation of the specified operator.
      */
     public final String toShortString(final AbstractInstantiatedOperator operator) {
@@ -2271,19 +2329,20 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         final int timeSpecifierSize = (int) Math.log10(plan.timeSpecifiers().size()) + 1;
 
         final StringBuilder str = new StringBuilder();
-        plan.timeSpecifiers().forEach(time ->
-            plan.getActionSet(time).forEach(a ->
-                str.append(String.format("%0" + timeSpecifierSize + "d: (%" + actionSize + "s) [%4.2f]%n",
-                    time, this.toShortString(a), ((float) a.getCost().getValue())))));
+        plan.timeSpecifiers()
+                .forEach(time -> plan.getActionSet(time).forEach(
+                        a -> str.append(String.format("%0" + timeSpecifierSize + "d: (%" + actionSize + "s) [%4.2f]%n",
+                                time, this.toShortString(a), ((float) a.getCost().getValue())))));
         return str.toString();
     }
 
-    //------------------------------------------------------------------------------------------------------------------
+    // ------------------------------------------------------------------------------------------------------------------
     // Methods added to deal with HDDL problem.
     //
 
     /**
-     * Extract all the relevant task of the problem from the list of primitive and compund tasks of the problem.
+     * Extract all the relevant task of the problem from the list of primitive and
+     * compund tasks of the problem.
      */
     protected void extractRelevantTasks() {
         this.tasks = new ArrayList<>();
@@ -2311,7 +2370,8 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         tasks.addAll(this.getRelevantPrimitiveTasks());
         tasks.addAll(this.getRelevantCompoundTasks());
 
-        // Create a map of the relevant tasks with their index to speedup the bit set encoding of the methods
+        // Create a map of the relevant tasks with their index to speedup the bit set
+        // encoding of the methods
         this.mapOfTasksIndex = new LinkedHashMap<>(tasks.size());
         int index = 0;
         for (Expression<Integer> task : tasks) {
@@ -2339,7 +2399,8 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Encode a list of specified methods into the final compact representation. Several specified
+     * Encode a list of specified methods into the final compact representation.
+     * Several specified
      * maps are used to speed-up the search by mapping an expression to this index.
      */
     protected void finalizeMethods() {
@@ -2347,13 +2408,17 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         this.durativeMethods = new ArrayList<>(this.getIntMethods().size());
         // For each instantiated methods
         for (IntMethod method : this.getIntMethods()) {
-            // Normalize the methods, i.e., split methods to have only methods with conjunctive preconditions
+            // Normalize the methods, i.e., split methods to have only methods with
+            // conjunctive preconditions
             final List<IntMethod> normalizedMethods = this.normalizeMethod(method);
             // The task resolvers of current method to finalize
             final List<Integer> resolvers = this.getTaskResolvers().get(this.mapOfTasksIndex.get(method.getTask()));
-            // For each normalized method we finalize it and update the resolvers of the tasks
-            // If a resolver has an index including in 0 to +infinity, the resolver is a method.
-            // If a resolver has an index including in -1 to -infinity, the resolver is durative method.
+            // For each normalized method we finalize it and update the resolvers of the
+            // tasks
+            // If a resolver has an index including in 0 to +infinity, the resolver is a
+            // method.
+            // If a resolver has an index including in -1 to -infinity, the resolver is
+            // durative method.
             for (IntMethod normalizedMethod : normalizedMethods) {
                 if (!normalizedMethod.isDurative()) {
                     resolvers.add(this.methods.size());
@@ -2430,12 +2495,12 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         final DefaultOrderingConstraintNetwork ordering = new DefaultOrderingConstraintNetwork(tasks.size());
         for (Expression<Integer> c : taskNetwork.getOrderingConstraints().getChildren()) {
             ordering.set(c.getChildren().get(0).getTaskID().getValue(),
-                c.getChildren().get(1).getTaskID().getValue());
+                    c.getChildren().get(1).getTaskID().getValue());
         }
         ordering.transitiveClosure();
         final TaskNetwork tn = new TaskNetwork(tasks, ordering);
 
-        for (Expression<Integer> e: taskNetwork.getConstraints()) {
+        for (Expression<Integer> e : taskNetwork.getConstraints()) {
             if (e.getConnector().equals(Connector.HOLD_BEFORE_METHOD_CONSTRAINT)) {
                 final Symbol<Integer> task = e.getChildren().get(0).getTaskID();
                 final Condition before = tn.getBeforeConstraints(task.getValue());
@@ -2515,7 +2580,7 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
         stn.transitiveClosure();
         final TaskNetwork tn = new TaskNetwork(tasks, stn);
 
-        for (Expression<Integer> e: taskNetwork.getConstraints()) {
+        for (Expression<Integer> e : taskNetwork.getConstraints()) {
             if (e.getConnector().equals(Connector.HOLD_BEFORE_METHOD_CONSTRAINT)) {
                 final Symbol<Integer> task = e.getChildren().get(0).getTaskID();
                 final Condition before = tn.getBeforeConstraints(task.getValue());
@@ -2551,8 +2616,10 @@ public abstract class FinalizedProblem extends PostInstantiatedProblem {
     }
 
     /**
-     * Normalize the methods, i.e, put in disjunctive normal form (DNF) the preconditions. If a method has
-     * disjunctive preconditions, a new method is created such all methods after normalization have only conjunctive
+     * Normalize the methods, i.e, put in disjunctive normal form (DNF) the
+     * preconditions. If a method has
+     * disjunctive preconditions, a new method is created such all methods after
+     * normalization have only conjunctive
      * precondition.
      * TO DO remove disjunctive expression in contraints.
      *
